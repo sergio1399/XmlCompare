@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CorporateActionNotification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <AppHdr>
+    <AppHdr1>
         <Fr>
             <FIId>
                 <FinInstnId>
@@ -18,7 +18,7 @@
         <BizMsgIdr>000DRE848S</BizMsgIdr>
         <MsgDefIdr>seev.031.001.04</MsgDefIdr>
         <CreDt>2016-12-19T16:27:09Z</CreDt>
-    </AppHdr>
+    </AppHdr1>
     <Document>
         <CorpActnNtfctn>
             <NtfctnGnlInf>
@@ -177,20 +177,6 @@ ACTIONS/REORG</AddtlInf>
 REGULAR CUSTOMER SUPPORT TEAM</AddtlInf>
                 </PtyCtctNrrtv>
             </AddtlInf>
-            <SplmtryData>
-                <Envlp>
-                    <XtnsnDt>
-                        <XtnsnCorpActnOptnDtls>
-                            <OptnNb>001</OptnNb>
-                            <RateAndAmtDtls>
-                                <WhldgTaxRate>
-                                    <Amt Ccy="RUB">0.08</Amt>
-                                </WhldgTaxRate>
-                            </RateAndAmtDtls>
-                        </XtnsnCorpActnOptnDtls>
-                    </XtnsnDt>
-                </Envlp>
-            </SplmtryData>
         </CorpActnNtfctn>
     </Document>
 </CorporateActionNotification>

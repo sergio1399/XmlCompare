@@ -2,6 +2,7 @@ package app.components.xml;
 
 
 import app.components.model.XMLError;
+import com.prowidesoftware.swift.io.ConversionService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,10 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.xpath.*;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,6 +44,30 @@ public class XMLComparator {
         parser.parse(is, handler);
 
         return handler.getDocument();
+    }
+
+
+    public static String swtToXml(InputStream is, String encoding){
+        String xml = null;
+        String swt = null;
+        try( BufferedReader br =
+                     new BufferedReader( new InputStreamReader(is, encoding )))
+        {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while(( line = br.readLine()) != null ) {
+                sb.append( line );
+                sb.append( '\n' );
+            }
+            swt = sb.toString();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ConversionService conversionService = new ConversionService();
+        xml = conversionService.getXml(swt);
+        return xml;
     }
 
     /**
@@ -110,10 +132,28 @@ public class XMLComparator {
         result.setErrors(new ArrayList<XMLError>());
         result.setWarnings(new ArrayList<XMLError>());
 
-        Diff detDiff = DiffBuilder.
+        ElementSelector selector = ElementSelectors.conditionalBuilder().whenElementIsNamed("Linkages").thenUse(new TransformerNodeMatcher()).build();
+
+        Diff detDiff = DiffBuilder.compare(first)
+                .withTest(second)
+                .withNodeMatcher( new DefaultNodeMatcher( selector, ElementSelectors.byName) )
+                .build();
+
+        /*Diff detDiff = DiffBuilder.compare(first)
+                .withTest(second).withDifferenceEvaluator(((comparison, outcome) -> {
+            if (outcome == ComparisonResult.DIFFERENT &&
+                    comparison.getType() == ComparisonType.CHILD_NODELIST_SEQUENCE) {
+                return ComparisonResult.EQUAL;
+            }
+
+            return outcome;
+        })).withNodeMatcher( new DefaultNodeMatcher( new TransformerNodeMatcher(), ElementSelectors.byName) )
+                .build();*/
+        /*Diff detDiff = DiffBuilder.
                 compare(first).
                 withTest(second).
-                withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byName)).build();
+                withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byName)).build();*/
+
         for (Difference difference : detDiff.getDifferences()) {
             if (difference.getResult() == ComparisonResult.SIMILAR) {
                 addFault(first, second, result.getWarnings(), difference);
