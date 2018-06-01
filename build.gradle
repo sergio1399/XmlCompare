@@ -32,6 +32,8 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.18.3'
 // https://mvnrepository.com/artifact/com.prowidesoftware/pw-swift-core
     compile group: 'com.prowidesoftware', name: 'pw-swift-core', version: 'SRU2017-7.9.7'
+// https://mvnrepository.com/artifact/org.springframework/spring-test
+    testCompile group: 'org.springframework', name: 'spring-test', version: '5.0.6.RELEASE'
 
 
 }

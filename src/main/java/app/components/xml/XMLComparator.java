@@ -132,10 +132,17 @@ public class XMLComparator {
         result.setErrors(new ArrayList<XMLError>());
         result.setWarnings(new ArrayList<XMLError>());
 
-        ElementSelector selector = ElementSelectors.conditionalBuilder().whenElementIsNamed("Linkages").thenUse(new TransformerNodeMatcher()).build();
+        ElementSelector selector = ElementSelectors.conditionalBuilder()
+                                                    .whenElementIsNamed("Linkages")
+                                                    .thenUse(new TransformerNodeMatcher())
+                                                    .elseUse(ElementSelectors.byName)
+                                                    .build();
 
         Diff detDiff = DiffBuilder.compare(first)
                 .withTest(second)
+                .checkForSimilar()
+                .ignoreWhitespace()
+                .normalizeWhitespace()
                 .withNodeMatcher( new DefaultNodeMatcher( selector, ElementSelectors.byName) )
                 .build();
 
@@ -148,8 +155,8 @@ public class XMLComparator {
 
             return outcome;
         })).withNodeMatcher( new DefaultNodeMatcher( new TransformerNodeMatcher(), ElementSelectors.byName) )
-                .build();*/
-        /*Diff detDiff = DiffBuilder.
+                .build();
+        Diff detDiff = DiffBuilder.
                 compare(first).
                 withTest(second).
                 withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byName)).build();*/

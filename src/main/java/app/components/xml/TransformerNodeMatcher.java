@@ -9,7 +9,6 @@ public class TransformerNodeMatcher implements ElementSelector {
 
     @Override
     public boolean canBeCompared(Element control, Element test) {
-
         Node controlLinkageTypeInd = control.getElementsByTagName("LinkageTypeInd").item(0);
         Node controlLinkedMessage  = control.getElementsByTagName("LinkedMessage").item(0);
         Node controlReference = control.getElementsByTagName("Reference").item(0);
@@ -30,7 +29,6 @@ public class TransformerNodeMatcher implements ElementSelector {
         Node testLinkageTypeInd = test.getElementsByTagName("LinkageTypeInd").item(0);
         Node testLinkedMessage  = test.getElementsByTagName("LinkedMessage").item(0);
         Node testReference = test.getElementsByTagName("Reference").item(0);
-        Node testEmailNode = test.getElementsByTagName("Email").item(0);
         String testLTI = null;
         if ( testLinkageTypeInd != null) {
             testLTI = testLinkageTypeInd.getTextContent();
