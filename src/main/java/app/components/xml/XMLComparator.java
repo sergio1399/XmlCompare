@@ -1,6 +1,7 @@
 package app.components.xml;
 
 
+import app.components.directory.CompareService;
 import app.components.model.XMLError;
 import com.prowidesoftware.swift.io.ConversionService;
 import org.w3c.dom.Document;
@@ -146,20 +147,6 @@ public class XMLComparator {
                 .withNodeMatcher( new DefaultNodeMatcher( selector, ElementSelectors.byName) )
                 .build();
 
-        /*Diff detDiff = DiffBuilder.compare(first)
-                .withTest(second).withDifferenceEvaluator(((comparison, outcome) -> {
-            if (outcome == ComparisonResult.DIFFERENT &&
-                    comparison.getType() == ComparisonType.CHILD_NODELIST_SEQUENCE) {
-                return ComparisonResult.EQUAL;
-            }
-
-            return outcome;
-        })).withNodeMatcher( new DefaultNodeMatcher( new TransformerNodeMatcher(), ElementSelectors.byName) )
-                .build();
-        Diff detDiff = DiffBuilder.
-                compare(first).
-                withTest(second).
-                withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byName)).build();*/
 
         for (Difference difference : detDiff.getDifferences()) {
             if (difference.getResult() == ComparisonResult.SIMILAR) {
@@ -249,55 +236,9 @@ public class XMLComparator {
     private static void addFault(Document docFirst, Document docSecond,
                                  List<XMLError> faults,
                                  Difference difference) {
-        XMLError faultControl = new XMLError();
-        XMLError faultTest = new XMLError();
-        String controlParentPath = "";
-        String testParentPath = "";
-        boolean needToAdd = true;
-
-        if (difference.getComparison().getControlDetails() != null
-                && difference.getComparison().getControlDetails().getXPath() != null) {
-            String path = removeAttrAndTextFromXPath( difference.getComparison().getControlDetails().getXPath() );
-            controlParentPath = removeAttrAndTextFromXPath( difference.getComparison().getControlDetails().getParentXPath() );
-            //предотвращаем дублирование ошибки отсутствия тэга
-            ComparisonType type = difference.getComparison().getType();
-            if( type == ComparisonType.CHILD_NODELIST_LENGTH ||
-                type == ComparisonType.ELEMENT_NUM_ATTRIBUTES){
-                needToAdd = false;
-            }
-
-            String message = difference.getComparison().toString();
-            if( needToAdd ) {
-                faultControl = fillFault(docFirst, path, controlParentPath, message, type);
-                faults.add(faultControl);
-            }
-        }
-        needToAdd = true;
-        if (difference.getComparison().getTestDetails() != null
-                && difference.getComparison().getTestDetails().getXPath() != null) {
-            String path = removeAttrAndTextFromXPath(difference.getComparison().getTestDetails().getXPath());
-            testParentPath = removeAttrAndTextFromXPath(difference.getComparison().getTestDetails().getParentXPath());
-            //предотвращаем дублирование ошибки отсутствия тэга
-            ComparisonType type = difference.getComparison().getType();
-            String message = difference.getComparison().toString();
-            if( type == ComparisonType.CHILD_NODELIST_LENGTH ||
-                type == ComparisonType.ELEMENT_NUM_ATTRIBUTES){
-                needToAdd = false;
-            }
-
-            if( (/*type == ComparisonType.CHILD_LOOKUP ||*/ type == ComparisonType.TEXT_VALUE || type == ComparisonType.ATTR_NAME_LOOKUP)  ){
-                for (XMLError xmlError : faults) {
-                    if(xmlError.getParentXPath().equals(testParentPath) || (type == ComparisonType.ATTR_NAME_LOOKUP && xmlError.getXpath().equals(path) )  ) {
-                        needToAdd = false;
-                        break;
-                    }
-                }
-            }
-            if( needToAdd ) {
-                faultTest = fillFault(docSecond, path, testParentPath, message, type);
-                faults.add(faultTest);
-            }
-        }
+ 
+        processDifference(difference, docFirst, faults, difference.getComparison().getControlDetails(), false);
+        processDifference(difference, docSecond, faults, difference.getComparison().getTestDetails(), true);
 
     }
 
@@ -382,6 +323,45 @@ public class XMLComparator {
             }
         }
         return result;
+    }
+
+    private static void processDifference(Difference difference, Document docFirst, List<XMLError> faults, Comparison.Detail detail, boolean checkErrorAlreadyExist){
+        XMLError faultControl = new XMLError();
+        XMLError faultTest = new XMLError();
+        String controlParentPath = "";
+        String testParentPath = "";
+        boolean needToAdd = true;
+        if (detail != null
+                && detail.getXPath() != null) {
+            String path = removeAttrAndTextFromXPath( detail.getXPath() );
+            controlParentPath = removeAttrAndTextFromXPath( detail.getParentXPath() );
+            //предотвращаем дублирование ошибки отсутствия тэга
+            ComparisonType type = difference.getComparison().getType();
+            String message = difference.getComparison().toString();
+            if( type == ComparisonType.CHILD_NODELIST_LENGTH || type == ComparisonType.ELEMENT_NUM_ATTRIBUTES){
+                needToAdd = false;
+            }
+
+            if(checkErrorAlreadyExist && isAlreadyExistError(type, faults, path, testParentPath) ){
+                needToAdd = false;
+            }
+            if( needToAdd ) {
+                faultControl = fillFault(docFirst, path, controlParentPath, message, type);
+                faults.add(faultControl);
+            }
+        }
+
+    }
+
+    private static boolean isAlreadyExistError(ComparisonType type, List<XMLError> faults, String path, String parentPath) {
+        if( (/*type == ComparisonType.CHILD_LOOKUP ||*/ type == ComparisonType.TEXT_VALUE || type == ComparisonType.ATTR_NAME_LOOKUP)  ){
+            for (XMLError xmlError : faults) {
+                if(xmlError.getParentXPath().equals(parentPath) || (type == ComparisonType.ATTR_NAME_LOOKUP && xmlError.getXpath().equals(path) )  ) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
