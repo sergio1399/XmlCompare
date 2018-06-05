@@ -3,7 +3,10 @@ package app.components.xml;
 
 import app.components.directory.CompareService;
 import app.components.model.XMLError;
+
 import com.prowidesoftware.swift.io.ConversionService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -48,7 +51,7 @@ public class XMLComparator {
     }
 
 
-    public static String swtToXml(InputStream is, String encoding){
+    public static String swtToXml(InputStream is, String encoding, String filename){
         String xml = null;
         String swt = null;
         try( BufferedReader br =
@@ -67,9 +70,26 @@ public class XMLComparator {
             e.printStackTrace();
         }
         ConversionService conversionService = new ConversionService();
+        try {
+            JSONObject json = new JSONObject(swt);
+            if(json.has("message") && json.has("exceptionType") )
+                return swt;
+        }catch (JSONException e){
+        }
         xml = conversionService.getXml(swt);
+
+        if(filename != null && filename != ""){
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+                bw.write(xml);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         return xml;
     }
+
+
 
     /**
      * @param list список пар трансформаций
@@ -236,7 +256,7 @@ public class XMLComparator {
     private static void addFault(Document docFirst, Document docSecond,
                                  List<XMLError> faults,
                                  Difference difference) {
- 
+
         processDifference(difference, docFirst, faults, difference.getComparison().getControlDetails(), false);
         processDifference(difference, docSecond, faults, difference.getComparison().getTestDetails(), true);
 

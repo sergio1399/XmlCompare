@@ -1,0 +1,160 @@
+<message>
+<block1>
+	<applicationId>F</applicationId>
+	<serviceId>01</serviceId>
+	<logicalTerminal>MICURUMMAXXX</logicalTerminal>
+	<sessionNumber>8346</sessionNumber>
+	<sequenceNumber>509622</sequenceNumber>
+</block1>
+<block2 type="output">
+	<messageType>568</messageType>
+	<senderInputTime>0627</senderInputTime>
+	<MIRDate>170117</MIRDate>
+	<MIRLogicalTerminal>IRVTUS3NAXXX</MIRLogicalTerminal>
+	<MIRSessionNumber>2983</MIRSessionNumber>
+	<MIRSequenceNumber>049229</MIRSequenceNumber>
+	<receiverOutputDate>170117</receiverOutputDate>
+	<receiverOutputTime>1427</receiverOutputTime>
+	<messagePriority>N</messagePriority>
+</block2>
+<block3>
+	<tag>
+		<name>108</name>
+		<value>AC28281A45544890</value>
+	</tag>
+</block3>
+<block4>
+	<tag>
+		<name>16R</name>
+		<value>GENL</value>
+	</tag>
+	<tag>
+		<name>20C</name>
+		<value>:CORP//0119820652BNYUNC</value>
+	</tag>
+	<tag>
+		<name>20C</name>
+		<value>:SEME//AC28281A45544890</value>
+	</tag>
+	<tag>
+		<name>23G</name>
+		<value>NEWM</value>
+	</tag>
+	<tag>
+		<name>22F</name>
+		<value>:CAEV//EXOF</value>
+	</tag>
+	<tag>
+		<name>98A</name>
+		<value>:PREP//20170117</value>
+	</tag>
+	<tag>
+		<name>16R</name>
+		<value>LINK</value>
+	</tag>
+	<tag>
+		<name>22F</name>
+		<value>:LINK//WITH</value>
+	</tag>
+	<tag>
+		<name>13A</name>
+		<value>:LINK//564</value>
+	</tag>
+	<tag>
+		<name>20C</name>
+		<value>:PREV//AC2826AAE684C6F8</value>
+	</tag>
+	<tag>
+		<name>16S</name>
+		<value>LINK</value>
+	</tag>
+	<tag>
+		<name>16S</name>
+		<value>GENL</value>
+	</tag>
+	<tag>
+		<name>16R</name>
+		<value>USECU</value>
+	</tag>
+	<tag>
+		<name>97A</name>
+		<value>:SAFE//581033</value>
+	</tag>
+	<tag>
+		<name>35B</name>
+		<value>ISIN US1635232028
+PJSC CHELYABINSK ZINC PLANT</value>
+	</tag>
+	<tag>
+		<name>93B</name>
+		<value>:ELIG//UNIT/4468,</value>
+	</tag>
+	<tag>
+		<name>93C</name>
+		<value>:SETT//UNIT/ELIG/4463,</value>
+	</tag>
+	<tag>
+		<name>16S</name>
+		<value>USECU</value>
+	</tag>
+	<tag>
+		<name>16R</name>
+		<value>ADDINFO</value>
+	</tag>
+	<tag>
+		<name>70F</name>
+		<value>:ADTX//+++UPDATE 10 JAN 2017+++
+.
+PLEASE BE ADVISED THAT BNY WONT FACILITATE THIS EVENT, THIS EVENT IS
+FOR INFORMATION PURPOSES ONLY
+.
++++END OF UPDATE++++
+.
+THE COMPANY HAS ANNOUNCED THAT THE URAL MINING AND METALLURGICAL
+COMPANY OJSC AND AFFILIATES WHO OWN 96.57 PERCENT
+OF CHELIABINSK ELEKTROLIT ZINK PLANT HAVE MADE A MANDATORY OFFER
+FOR THE OUTSTANDING 2,402,507 UNDERLYING ORDINARY SHARES AT RUB681 PER
+SHARE.
+.
+HOLDERS OF GDRS MUST EXCHANGE THEIR GDRS FOR UNDERLYING SHARES
+OF RUB1 IN ORDER TO TAKE PART IN THE MANDATORY OFFER.
+.
+.</value>
+	</tag>
+	<tag>
+		<name>70E</name>
+		<value>:PACO//BANK OF NEW YORK MELLON CONTACT
+INFO
+UK CLIENT USER GROUP
+PHONE:44 161 725 4545</value>
+	</tag>
+	<tag>
+		<name>16S</name>
+		<value>ADDINFO</value>
+	</tag>
+</block4>
+<block5>
+	<tag>
+		<name>MAC</name>
+		<value>00000000</value>
+	</tag>
+	<tag>
+		<name>CHK</name>
+		<value>8CA6100096C0</value>
+	</tag>
+</block5>
+<block name="S">
+	<tag>
+		<name>SAC</name>
+		<value></value>
+	</tag>
+	<tag>
+		<name>COP</name>
+		<value>S</value>
+	</tag>
+</block>
+<unparsedTexts>
+	<text>
+</text>
+</unparsedTexts>
+</message>
